@@ -1,4 +1,3 @@
-#include <conio.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +8,7 @@ int main()
     FILE* file1;
     FILE* file;
 
-    file1 = fopen("test.txt", "r");
+    file1 = fopen("geometry.txt", "r");
 
     if (!file1) {
         printf("Error: cannot open file. Check name of file\n");
@@ -32,7 +31,7 @@ int main()
     fclose(file1);
 
     char a[length], b[6] = "circle";
-    file = fopen("test.txt", "r");
+    file = fopen("geometry.txt", "r");
     while (fgets(a, length + 1, file)) {
         printf("%s", a);
 
@@ -46,8 +45,8 @@ int main()
             }
             ind_open_bracket = i;
         }
-        // printf("'(' = %d\n", ind_open_bracket);
 
+        // find index of ')' token
         for (i = 0; i < length; i++) {
             if (a[i] == ')') {
                 ind_close_bracket = i;
@@ -66,7 +65,7 @@ int main()
                            i);
                     break;
                 }
-                if (isdigit(a[i]) == 0 && a[i] != '.') {
+                if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
                     error = 1;
                     printf("Error at column %d: expected '<double>'\n", i);
                     break;
@@ -76,7 +75,6 @@ int main()
                 break;
             }
         }
-        // printf("index of first numer = %d\n", ind_first_num_elm);
 
         // check second number
         for (i = ind_first_num_elm + 2; a[i] != ','; i++) {
@@ -87,7 +85,7 @@ int main()
                            i);
                     break;
                 }
-                if (isdigit(a[i]) == 0 && a[i] != '.') {
+                if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
                     error = 1;
                     printf("Error at column %d: expected '<double>'\n", i);
                     break;
@@ -97,7 +95,6 @@ int main()
                 break;
             }
         }
-        // printf("index of second number = %d\n", ind_second_num_elm);
 
         // check last number
         for (i = ind_second_num_elm + 3; i < ind_close_bracket; i++) {
@@ -115,7 +112,6 @@ int main()
                 break;
             }
         }
-        // printf("index of last number = %d\n", ind_last_num_elm);
 
         // check ')' symbol
         for (i = ind_last_num_elm + 1; i < length; i++) {
@@ -132,7 +128,6 @@ int main()
                 break;
             }
         }
-        // printf("')' = %d\n", ind_close_bracket);
 
         // check unexpected tokens
         for (i = ind_close_bracket + 1; i < length; i++) {
