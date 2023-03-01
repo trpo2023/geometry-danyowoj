@@ -8,7 +8,7 @@ int main()
     FILE* file1;
     FILE* file;
 
-    file1 = fopen("geometry.txt", "r");
+    file1 = fopen("test.txt", "r");
 
     if (!file1) {
         printf("Error: cannot open file. Check name of file\n");
