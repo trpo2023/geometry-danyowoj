@@ -8,7 +8,7 @@ int main()
     FILE* file1;
     FILE* file;
 
-    file1 = fopen("test.txt", "r");
+    file1 = fopen("geometry.txt", "r");
 
     if (!file1) {
         printf("Error: cannot open file. Check name of file\n");
@@ -87,7 +87,9 @@ int main()
                 }
                 if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
                     error = 1;
-                    printf("Error at column %d: expected '<double>'\n", i);
+                    printf("Error at column %d: expected '<double>' or ',' "
+                           "token\n",
+                           i);
                     break;
                 }
                 ind_second_num_elm = i;
@@ -99,7 +101,7 @@ int main()
         // check last number
         for (i = ind_second_num_elm + 3; i < ind_close_bracket; i++) {
             if (error == 0) {
-                if (isdigit(a[i]) == 0 && a[i] != '.') {
+                if ((isdigit(a[i]) == 0 && a[i] != '.' )|| a[i] == '0') {
                     if (a[i] == ')' || a[i] == '(' || a[i] == ' ') {
                         break;
                     }
