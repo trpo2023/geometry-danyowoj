@@ -3,6 +3,117 @@
 #include <stdlib.h>
 #include <string.h>
 
+int check_word(char a[], int length)
+{
+    char b[6] = "circle";
+    int open_bracket_index = 0, i;
+    for (i = 0; i < 7; i++) {
+        if (a[i] != b[i] && i < 6) {
+            printf("\nError at column %d: expected 'circle'", i);
+            break;
+        }
+        open_bracket_index = i;
+    }
+    return open_bracket_index;
+}
+
+int search_close_bracket_index(char a[], int length)
+{
+    int close_bracket_index;
+    for (int i = 0; i < length; i++) {
+        if (a[i] == ')') {
+            close_bracket_index = i;
+        } else {
+            close_bracket_index = length - 1;
+        }
+    }
+}
+
+int check_first_number(char a[], int open_bracket_index)
+{
+    int first_num_elem_index;
+    for (int i = open_bracket_index + 1; a[i] != ' '; i++) {
+        if (a[i] == ',') {
+            printf("\nError at column %d: expected '<space>' and "
+                   "'<double>'",
+                   i);
+            break;
+        }
+        if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
+            printf("\nError at column %d: expected '<double>'", i);
+            break;
+        }
+        first_num_elem_index = i;
+    }
+    return first_num_elem_index;
+}
+
+int check_second_number(char a[], int first_num_elem_index)
+{
+    int second_num_elem_index;
+    for (int i = first_num_elem_index + 2; a[i] != ','; i++) {
+        if (a[i] == ')') {
+            printf("\nError at column %d: expected ',' and '<double>'", i);
+            break;
+        }
+        if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
+            printf("\nError at column %d: expected '<double>' or ',' "
+                   "token",
+                   i);
+            break;
+        }
+        second_num_elem_index = i;
+    }
+    return second_num_elem_index;
+}
+
+int check_third_number(
+        char a[], int second_num_elem_index, int close_bracket_index)
+{
+    int third_num_elem_index;
+    for (int i = second_num_elem_index + 3; i < close_bracket_index; i++) {
+        if ((isdigit(a[i]) == 0 && a[i] != '.') || a[i] == '0') {
+            if (a[i] == ')' || a[i] == '(' || a[i] == ' ') {
+                break;
+            }
+            printf("\nError at column %d: expected '<double>'", i);
+            break;
+        }
+        third_num_elem_index = i;
+    }
+    return third_num_elem_index;
+}
+
+int check_close_bracket_index(char a[], int third_num_elem_index, int length)
+{
+    int close_bracket_index;
+    for (int i = third_num_elem_index + 1; i < length; i++) {
+        if (a[i] != ')') {
+            printf("\nError at column %d: expected ')'", i);
+            break;
+        } else {
+            close_bracket_index = i;
+            break;
+        }
+    }
+    return close_bracket_index;
+}
+
+void check_unexpected_tokens(char a[], int close_bracket_index, int length)
+{
+    for (int i = close_bracket_index + 1; i < length; i++) {
+        if (a[i] == '\n') {
+            printf("No Errors!");
+            break;
+        }
+
+        if (a[i] != ' ') {
+            printf("\nError at column %d: unexpected token", i);
+            break;
+        }
+    }
+}
+
 int main()
 {
     FILE* file1;
@@ -11,13 +122,14 @@ int main()
     file1 = fopen("geometry.txt", "r");
 
     if (!file1) {
-        printf("Error: cannot open file. Check name of file\n");
+        printf("\nError: cannot open file. Check file's name");
     }
 
-    int i, ind_open_bracket = 0, ind_close_bracket = 0, ind_last_num_elm = 0,
-           ind_first_num_elm = 0, ind_second_num_elm = 0;
+    int i, open_bracket_index = 0, close_bracket_index = 0,
+           first_num_elem_index = 0, second_num_elem_index = 0,
+           third_num_elem_index = 0;
     int length = 0, count = 0, element = 0, error = 0;
-
+    puts("\n");
     while (1) {
         element = fgetc(file1);
         if (element == EOF) {
@@ -30,130 +142,28 @@ int main()
     length = count;
     fclose(file1);
 
-    char a[length], b[6] = "circle";
+    char a[length];
     file = fopen("geometry.txt", "r");
     while (fgets(a, length + 1, file)) {
         printf("%s", a);
 
-        // check 'circle and finding index of '(' symbol
-        for (i = 0; i < 7; i++) {
-            if (a[i] != b[i] && i < 6) {
-                printf("Error at column %d: expected 'circle'\n", i);
-                error = 1;
-                break;
-                ;
-            }
-            ind_open_bracket = i;
-        }
+        open_bracket_index = check_word(a, length);
 
-        // find index of ')' token
-        for (i = 0; i < length; i++) {
-            if (a[i] == ')') {
-                ind_close_bracket = i;
-            } else {
-                ind_close_bracket = length - 1;
-            }
-        }
+        close_bracket_index = search_close_bracket_index(a, length);
 
-        // check first number
-        for (i = ind_open_bracket + 1; a[i] != ' '; i++) {
-            if (error == 0) {
-                if (a[i] == ',') {
-                    error = 1;
-                    printf("Error at column %d: expected '<space>' and "
-                           "'<double>'\n",
-                           i);
-                    break;
-                }
-                if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
-                    error = 1;
-                    printf("Error at column %d: expected '<double>'\n", i);
-                    break;
-                }
-                ind_first_num_elm = i;
-            } else {
-                break;
-            }
-        }
+        first_num_elem_index = check_first_number(a, open_bracket_index);
 
-        // check second number
-        for (i = ind_first_num_elm + 2; a[i] != ','; i++) {
-            if (error == 0) {
-                if (a[i] == ')') {
-                    error = 1;
-                    printf("Error at column %d: expected ',' and '<double>'\n",
-                           i);
-                    break;
-                }
-                if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
-                    error = 1;
-                    printf("Error at column %d: expected '<double>' or ',' "
-                           "token\n",
-                           i);
-                    break;
-                }
-                ind_second_num_elm = i;
-            } else {
-                break;
-            }
-        }
+        second_num_elem_index = check_second_number(a, first_num_elem_index);
 
-        // check last number
-        for (i = ind_second_num_elm + 3; i < ind_close_bracket; i++) {
-            if (error == 0) {
-                if ((isdigit(a[i]) == 0 && a[i] != '.' )|| a[i] == '0') {
-                    if (a[i] == ')' || a[i] == '(' || a[i] == ' ') {
-                        break;
-                    }
-                    error = 1;
-                    printf("Error at column %d: expected '<double>'\n", i);
-                    break;
-                }
-                ind_last_num_elm = i;
-            } else {
-                break;
-            }
-        }
+        third_num_elem_index = check_third_number(
+                a, second_num_elem_index, close_bracket_index);
 
-        // check ')' symbol
-        for (i = ind_last_num_elm + 1; i < length; i++) {
-            if (error == 0) {
-                if (a[i] != ')') {
-                    error = 1;
-                    printf("Error at column %d: expected ')'\n", i);
-                    break;
-                } else {
-                    ind_close_bracket = i;
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
+        close_bracket_index
+                = check_close_bracket_index(a, third_num_elem_index, length);
 
-        // check unexpected tokens
-        for (i = ind_close_bracket + 1; i < length; i++) {
-            if (error == 0) {
-                if (a[i] == '\n') {
-                    break;
-                }
+        check_unexpected_tokens(a, close_bracket_index, length);
 
-                if (a[i] != ' ') {
-                    error = 1;
-                    printf("Error at column %d: unexpected token\n", i);
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        if (error == 0) {
-            printf("No Errors!\n");
-        }
-
-        error = 0;
-        printf("\n");
+        puts("\n\n");
     }
     return 0;
 }
