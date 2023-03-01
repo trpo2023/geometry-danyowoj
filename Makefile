@@ -1,8 +1,10 @@
-final:final.c
-	gcc -Wall -Werror -o final final.c
+all: 
+	$ gcc -Wall -Werror -o geometry geometry.c
 
 clean:
-	rm final
-	
+
+	rm geometry
+
 run:
-	./final
+
+	./geometry
