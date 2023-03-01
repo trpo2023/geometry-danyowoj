@@ -3,12 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-int check_word(char a[], int length)
+int check_word(char a[])
 {
     char b[6] = "circle";
-    int open_bracket_index = 0, i;
-    for (i = 0; i < 7; i++) {
+    int open_bracket_index;
+    for (int i = 0; i < 7; i++) {
         if (a[i] != b[i] && i < 6) {
+            open_bracket_index = 0;
             printf("\nError at column %d: expected 'circle'", i);
             break;
         }
@@ -27,11 +28,12 @@ int search_close_bracket_index(char a[], int length)
             close_bracket_index = length - 1;
         }
     }
+    return close_bracket_index;
 }
 
 int check_first_number(char a[], int open_bracket_index)
 {
-    int first_num_elem_index;
+    int first_num_elem_index = 0;
     for (int i = open_bracket_index + 1; a[i] != ' '; i++) {
         if (a[i] == ',') {
             printf("\nError at column %d: expected '<space>' and "
@@ -50,7 +52,7 @@ int check_first_number(char a[], int open_bracket_index)
 
 int check_second_number(char a[], int first_num_elem_index)
 {
-    int second_num_elem_index;
+    int second_num_elem_index = 0;
     for (int i = first_num_elem_index + 2; a[i] != ','; i++) {
         if (a[i] == ')') {
             printf("\nError at column %d: expected ',' and '<double>'", i);
@@ -70,7 +72,7 @@ int check_second_number(char a[], int first_num_elem_index)
 int check_third_number(
         char a[], int second_num_elem_index, int close_bracket_index)
 {
-    int third_num_elem_index;
+    int third_num_elem_index = 0;
     for (int i = second_num_elem_index + 3; i < close_bracket_index; i++) {
         if ((isdigit(a[i]) == 0 && a[i] != '.') || a[i] == '0') {
             if (a[i] == ')' || a[i] == '(' || a[i] == ' ') {
@@ -86,7 +88,7 @@ int check_third_number(
 
 int check_close_bracket_index(char a[], int third_num_elem_index, int length)
 {
-    int close_bracket_index;
+    int close_bracket_index = 0;
     for (int i = third_num_elem_index + 1; i < length; i++) {
         if (a[i] != ')') {
             printf("\nError at column %d: expected ')'", i);
@@ -125,10 +127,10 @@ int main()
         printf("\nError: cannot open file. Check file's name");
     }
 
-    int i, open_bracket_index = 0, close_bracket_index = 0,
-           first_num_elem_index = 0, second_num_elem_index = 0,
-           third_num_elem_index = 0;
-    int length = 0, count = 0, element = 0, error = 0;
+    int open_bracket_index = 0, close_bracket_index = 0,
+        first_num_elem_index = 0, second_num_elem_index = 0,
+        third_num_elem_index = 0;
+    int length = 0, count = 0, element = 0;
     puts("\n");
     while (1) {
         element = fgetc(file1);
@@ -147,7 +149,7 @@ int main()
     while (fgets(a, length + 1, file)) {
         printf("%s", a);
 
-        open_bracket_index = check_word(a, length);
+        open_bracket_index = check_word(a);
 
         close_bracket_index = search_close_bracket_index(a, length);
 
