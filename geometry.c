@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int check_word(char a[], int* error)
-{
+int check_word(char a[], int* error) {
     char b[6] = "circle";
     int open_bracket_index;
     for (int i = 0; i < 7; i++) {
@@ -19,8 +18,7 @@ int check_word(char a[], int* error)
     return open_bracket_index;
 }
 
-int search_close_bracket_index(char a[], int length)
-{
+int search_close_bracket_index(char a[], int length) {
     int close_bracket_index;
     for (int i = 0; i < length; i++) {
         if (a[i] == ')') {
@@ -32,8 +30,7 @@ int search_close_bracket_index(char a[], int length)
     return close_bracket_index;
 }
 
-int check_first_number(char a[], int open_bracket_index, int* error)
-{
+int check_first_number(char a[], int open_bracket_index, int* error) {
     int first_num_elem_index = 0;
     for (int i = open_bracket_index + 1; a[i] != ' '; i++) {
         if (*error == 0) {
@@ -55,8 +52,7 @@ int check_first_number(char a[], int open_bracket_index, int* error)
     return first_num_elem_index;
 }
 
-int check_second_number(char a[], int first_num_elem_index, int* error)
-{
+int check_second_number(char a[], int first_num_elem_index, int* error) {
     int second_num_elem_index = 0;
     for (int i = first_num_elem_index + 2; a[i] != ','; i++) {
         if (*error == 0) {
@@ -80,11 +76,8 @@ int check_second_number(char a[], int first_num_elem_index, int* error)
 }
 
 int check_third_number(
-        char a[],
-        int second_num_elem_index,
-        int close_bracket_index,
-        int* error)
-{
+        char a[], int second_num_elem_index, int close_bracket_index,
+        int* error) {
     int third_num_elem_index = 0;
     for (int i = second_num_elem_index + 3; i < close_bracket_index; i++) {
         if (*error == 0) {
@@ -104,8 +97,7 @@ int check_third_number(
 }
 
 int check_close_bracket_index(
-        char a[], int third_num_elem_index, int length, int* error)
-{
+        char a[], int third_num_elem_index, int length, int* error) {
     int close_bracket_index = 0;
     for (int i = third_num_elem_index + 1; i < length; i++) {
         if (*error == 0) {
@@ -124,8 +116,7 @@ int check_close_bracket_index(
 }
 
 void check_unexpected_tokens(
-        char a[], int close_bracket_index, int length, int* error)
-{
+        char a[], int close_bracket_index, int length, int* error) {
     for (int i = close_bracket_index + 1; i < length; i++) {
         if (*error == 0) {
             if (a[i] == '\n') {
@@ -142,8 +133,7 @@ void check_unexpected_tokens(
     }
 }
 
-int main()
-{
+int main() {
     FILE* file1;
     FILE* file;
 
