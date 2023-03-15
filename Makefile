@@ -1,10 +1,10 @@
-geometry:geometry.c
-	gcc -Wall -Werror -o geometry geometry.c
+geometry.exe: geometry.c
+	gcc -Wall -Werror -o geometry.exe geometry.c
 
 clean:
 
-	rm geometry
+	rm geometry.exe
 
 run:
 
-	./geometry
+	./geometry.exe
