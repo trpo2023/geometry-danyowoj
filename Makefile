@@ -42,8 +42,22 @@ $(OBJ_DIR)/%.o: %.c
 
 clean:
 	$(RM) $(APP_PATH) $(OBJ_DIR)/*/*/*.[od]
+	$(RM) $(test_exe)
 
 .PHONY: run
 
 run:
 	./bin/geometry
+
+.PHONY: test
+
+test:$(test_exe)
+
+$(test_exe):$(Test_Path)/main.o obj/src/test1/$(Test_Name).o $(LIB_PATH)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+	
+$(Test_Path)/$(Test_Name).o: test1/$(Test_Name).cpp
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+
+$(Test_Path)/main.o: test1/main.cpp
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
