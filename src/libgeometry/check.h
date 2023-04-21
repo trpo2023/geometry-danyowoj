@@ -1,20 +1,13 @@
-void check_word(char* a, char* b, int* error, int* ind_open_bracket);
-void find_close_bracket(char* a, int* length, int* ind_close_bracket);
-void check_first_num(
-        char* a, int* ind_open_bracket, int* ind_first_num_elm, int* error);
-void check_second_num(
-        char* a, int* ind_first_num_elm, int* ind_second_num_elm, int* error);
-void check_third_num(
+int check_word(char* a, char* b, int* error);
+int search_close_bracket_index(char* a, int* length);
+int check_first_number(char* a, int* open_bracket_index, int* error);
+int check_second_number(char* a, int* first_num_elem_index, int* error);
+int check_third_number(
         char* a,
-        int* ind_second_num_elm,
-        int* ind_last_num_elm,
-        int* error,
-        int* ind_close_bracket);
-void check_close_bracket(
-        char* a,
-        int* ind_last_num_elm,
-        int* length,
-        int* ind_close_bracket,
+        int* second_num_elem_index,
+        int* close_bracket_index,
         int* error);
-void check_unexpected_token(
-        char* a, int* ind_close_bracket, int* length, int* error);
+int check_close_bracket_index(
+        char* a, int* third_num_elem_index, int* length, int* error);
+int check_unexpected_tokens(
+        char* a, int* close_bracket_index, int* length, int* error);

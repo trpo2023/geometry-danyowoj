@@ -4,134 +4,135 @@
 #include <stdlib.h>
 #include <string.h>
 
-void check_word(char* a, char* b, int* error, int* ind_open_bracket)
+int check_word(char* a, char* b, int* error)
 {
+    int open_bracket_index;
+
     for (int i = 0; i < 7; i++) {
         if (a[i] != b[i] && i < 6) {
             printf("Error at column %d: expected 'circle'\n", i);
             *error = 1;
             break;
         }
-        *ind_open_bracket = i;
+        open_bracket_index = i;
     }
+    return open_bracket_index;
 }
 
-void find_close_bracket(char* a, int* length, int* ind_close_bracket)
+int search_close_bracket_index(char* a, int* length)
 {
+    int close_bracket_index;
+
     for (int i = 0; i < *length && a[i] != '\n'; i++) {
         if (a[i] == ')') {
-            *ind_close_bracket = i;
+            close_bracket_index = i;
         } else {
-            *ind_close_bracket = *length - 1;
+            close_bracket_index = *length - 1;
         }
     }
+    return close_bracket_index;
 }
 
-// check first number
-void check_first_num(
-        char* a, int* ind_open_bracket, int* ind_first_num_elm, int* error)
+int check_first_number(char* a, int* open_bracket_index, int* error)
 {
-    for (int i = *ind_open_bracket + 1; a[i] != ' '; i++) {
+    int first_num_elem_index = 0;
+
+    for (int i = *open_bracket_index + 1; a[i] != ' '; i++) {
         if (*error == 0) {
             if (a[i] == ',') {
                 *error = 1;
-                printf("Error at column %d: expected '<space>' and "
-                       "'<double>'\n",
+                printf("\nError at column %d: expected '<space>' and "
+                       "'<double>'",
                        i);
                 break;
             }
             if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-'
                 && a[i] != ' ') {
                 *error = 1;
-                printf("Error at column %d: expected '<double>'\n", i);
+                printf("\nError at column %d: expected '<double>'", i);
                 break;
             }
-            *ind_first_num_elm = i;
-        } else {
+            first_num_elem_index = i;
+        } else
             break;
-        }
     }
+    return first_num_elem_index;
 }
 
-// check second number
-void check_second_num(
-        char* a, int* ind_first_num_elm, int* ind_second_num_elm, int* error)
+int check_second_number(char* a, int* first_num_elem_index, int* error)
 {
-    for (int i = *ind_first_num_elm + 2; a[i] != ','; i++) {
+    int second_num_elem_index = 0;
+    for (int i = *first_num_elem_index + 2; a[i] != ','; i++) {
         if (*error == 0) {
             if (a[i] == ')') {
                 *error = 1;
-                printf("Error at column %d: expected ',' and '<double>'\n", i);
+                printf("\nError at column %d: expected ',' and '<double>'", i);
                 break;
             }
             if (isdigit(a[i]) == 0 && a[i] != '.' && a[i] != '-') {
                 *error = 1;
-                printf("Error at column %d: expected '<double>' or ',' "
-                       "token\n",
+                printf("\nError at column %d: expected '<double>' or ',' "
+                       "token",
                        i);
                 break;
             }
-            *ind_second_num_elm = i;
-        } else {
+            second_num_elem_index = i;
+        } else
             break;
-        }
     }
+    return second_num_elem_index;
 }
 
-// check last number
-void check_third_num(
+int check_third_number(
         char* a,
-        int* ind_second_num_elm,
-        int* ind_last_num_elm,
-        int* error,
-        int* ind_close_bracket)
+        int* second_num_elem_index,
+        int* close_bracket_index,
+        int* error)
 {
-    for (int i = *ind_second_num_elm + 3; i < *ind_close_bracket; i++) {
+    int third_num_elem_index = 0;
+
+    for (int i = *second_num_elem_index + 3; i < *close_bracket_index; i++) {
         if (*error == 0) {
             if ((isdigit(a[i]) == 0 && a[i] != '.') || a[i] == '0') {
                 if (a[i] == ')' || a[i] == '(' || a[i] == ' ') {
                     break;
                 }
                 *error = 1;
-                printf("Error at column %d: expected '<double>'\n", i);
+                printf("\nError at column %d: expected '<double>'", i);
                 break;
             }
-            *ind_last_num_elm = i;
-        } else {
+            third_num_elem_index = i;
+        } else
             break;
-        }
     }
+    return third_num_elem_index;
 }
 
-// check ')' symbol
-void check_close_bracket(
-        char* a,
-        int* ind_last_num_elm,
-        int* length,
-        int* ind_close_bracket,
-        int* error)
+int check_close_bracket_index(
+        char* a, int* third_num_elem_index, int* length, int* error)
 {
-    for (int i = *ind_last_num_elm + 1; i < *length; i++) {
+    int close_bracket_index = 0;
+
+    for (int i = *third_num_elem_index + 1; i < *length; i++) {
         if (*error == 0) {
             if (a[i] != ')') {
                 *error = 1;
-                printf("Error at column %d: expected ')'\n", i);
+                printf("\nError at column %d: expected ')'", i);
                 break;
             } else {
-                *ind_close_bracket = i;
+                close_bracket_index = i;
                 break;
             }
-        } else {
+        } else
             break;
-        }
     }
+    return close_bracket_index;
 }
 
-// check unexpected tokens
-void check_unexpected_token(
-        char* a, int* ind_close_bracket, int* length, int* error)
+int check_unexpected_tokens(
+        char* a, int* close_bracket_index, int* length, int* error)
 {
-    for (int i = *ind_close_bracket + 1; i < *length; i++) {
+    for (int i = *close_bracket_index + 1; i < *length; i++) {
         if (*error == 0) {
             if (a[i] == '\n') {
                 break;
@@ -139,11 +140,11 @@ void check_unexpected_token(
 
             if (a[i] != ' ') {
                 *error = 1;
-                printf("Error at column %d: unexpected token\n", i);
+                printf("\nError at column %d: unexpected token", i);
                 break;
             }
-        } else {
+        } else
             break;
-        }
     }
+    return *error;
 }
