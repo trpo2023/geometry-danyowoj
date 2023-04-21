@@ -1,8 +1,14 @@
+#include <stdio.h>
+
 #define CTEST_MAIN
 
-#include <ctest.h>
+#define CTEST_SEGFAULT
 
-int main(int argc, const char** argv)
+#include "C:/Users/latsu/GitHub_projects/geometry/geometry-danyowoj/thirdparty/ctest.h"
+
+int main(int argc, const char* argv[])
 {
-    return ctest_main(argc, argv);
+    int result = ctest_main(argc, argv);
+
+    return result;
 }
