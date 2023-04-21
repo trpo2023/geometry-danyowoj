@@ -1,8 +1,3 @@
-circle(1 -21.42, 1)
-cicle(1 -21.42, 1)
-circle(1 -21.42, 1q
-circle(q -21.42, 1)
-circle(1 q, 1)
-circle(1 -21.42, q)
-circle(1 -21.42, 1q
-circle(1 -21.42, 1)q
+circle(4 2, 8)
+circle(6.9 1.23, 456)
+circle(3 y, 12)
