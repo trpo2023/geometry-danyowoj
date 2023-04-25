@@ -6,7 +6,7 @@
 
 int check_word(char* a, char* b, int* error)
 {
-    int open_bracket_index;
+    int open_bracket_index = 0;
 
     for (int i = 0; i < 7; i++) {
         if (a[i] != b[i] && i < 6) {
@@ -14,20 +14,22 @@ int check_word(char* a, char* b, int* error)
             *error = 1;
             break;
         }
-        open_bracket_index = i;
+        if (a[6] == '(') {
+            open_bracket_index = i;
+        } else {
+            *error = 1;
+        }
     }
     return open_bracket_index;
 }
 
 int search_close_bracket_index(char* a, int* length)
 {
-    int close_bracket_index;
+    int close_bracket_index = 0;
 
     for (int i = 0; i < *length && a[i] != '\n'; i++) {
         if (a[i] == ')') {
             close_bracket_index = i;
-        } else {
-            close_bracket_index = *length - 1;
         }
     }
     return close_bracket_index;
