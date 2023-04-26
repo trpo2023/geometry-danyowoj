@@ -1,3 +1,4 @@
 circle(4 2, 8)
-circle(6 2, 8)
 circle(2 2, 8)
+circle(8 2, 2)
+circle(2 2, 21)
