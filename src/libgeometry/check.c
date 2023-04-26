@@ -1,5 +1,6 @@
 #include "check.h"
 #include <ctype.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -149,4 +150,32 @@ int check_unexpected_tokens(
             break;
     }
     return *error;
+}
+
+void intersects(
+        float* x_arr, float* y_arr, float* radius_arr, int figure_amount)
+{
+    printf("\nIntersections:\n");
+    for (int i = 0; i < figure_amount; i++) {
+        printf("\ncircle %d. intersects circle(s) ", i);
+        for (int j = 0; j < figure_amount; j++) {
+            // distance between centers
+            double r = sqrt(
+                    pow(x_arr[j] - x_arr[i], 2) + pow(y_arr[j] - y_arr[i], 2));
+            // checking for the coincidence of two circles
+            if (r == 0 && radius_arr[i] == radius_arr[j] && j != i) {
+                // intersects
+                printf("%d. ", j);
+            }
+            // checking for the intersection of circles according to the
+            // triangle rule
+            if (radius_arr[i] + radius_arr[j] >= r
+                && radius_arr[i] + r >= radius_arr[j]
+                && r + radius_arr[j] >= radius_arr[i] && j != i) {
+                // intersects
+                printf("%d. ", j);
+            }
+        }
+    }
+    puts("\n");
 }
