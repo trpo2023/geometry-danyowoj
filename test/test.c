@@ -1,5 +1,5 @@
+#include "../src/libgeometry/check.h"
 #include "../thirdparty/ctest.h"
-#include "libgeometry/check.h"
 
 #include <stdio.h>
 
