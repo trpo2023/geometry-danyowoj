@@ -38,7 +38,7 @@ $(LIB_PATH): $(LIB_OBJECTS)
 	ar rcs $@ $^
 
 $(OBJ_DIR)/%.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -c $(CFLAGS) $< -o $@ -lm
 
 .PHONY: run clean test
 
