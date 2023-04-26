@@ -40,12 +40,13 @@ $(LIB_PATH): $(LIB_OBJECTS)
 $(OBJ_DIR)/%.o: %.c
 	$(CC) -c $(CFLAGS) $< -o $@ 
 
-.PHONY: run clean test
+.PHONY: run clean test run_test
 
 run:
-	./bin/test
 	./bin/geometry
-	
+
+run_test:
+	./bin/test
 
 clean:
 	$(RM) $(APP_PATH) $(OBJ_DIR)/*/*/*.[aod]
