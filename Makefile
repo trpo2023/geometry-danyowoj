@@ -1,20 +1,18 @@
 CC = gcc
+CFLAGS = -Wall -Werror
 
 APP_NAME = geometry
 LIB_NAME = libgeometry
-TEST_NAME = test #write your file name for the tests
-
-CFLAGS = -Wall -Werror
-CPPFLAGS = -I src -MD -MMD
+TEST_NAME = test
 
 BIN_DIR = bin
 OBJ_DIR = obj
 SRC_DIR = src
-TEST_DIR = test #write your name of the folder where the file for tests is located
+TEST_DIR = test
 
 APP_PATH = $(BIN_DIR)/$(APP_NAME)
 LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(LIB_NAME)/$(LIB_NAME).o
-TEST_PATH = $(BIN_DIR)/&(TEST_NAME)
+TEST_PATH = $(BIN_DIR)/$(TEST_NAME)
 
 SRC_EXT = c
 
@@ -26,7 +24,6 @@ LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
 TEST_SOURCE = $(shell find $(TEST_DIR) -name '*.$(SRC_EXT)')
 TEST_OBJECTS = $(TEST_SOURCE:$(TEST_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(TEST_DIR)/%.o)
-
 
 DEPS = $(APP_OBJECTS:.o=.h) $(LIB_OBJECTS:.o=.h)
 
@@ -43,17 +40,17 @@ $(LIB_PATH): $(LIB_OBJECTS)
 $(OBJ_DIR)/%.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
-.PHONY: run
+.PHONY: run clean test
 
 run:
+	./bin/test
 	./bin/geometry
-
-.PHONY: clean
+	
 
 clean:
-	$(RM) $(APP_PATH) $(OBJ_DIR)/*/*/*.[od]
-
-.PHONY: test
+	$(RM) $(APP_PATH) $(OBJ_DIR)/*/*/*.[aod]
+	$(RM) bin/*.exe
+	$(RM) $(OBJ_DIR)/$(TEST_DIR)/*.[aod]
 
 test: $(TEST_PATH)
 
