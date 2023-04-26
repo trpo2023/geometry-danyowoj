@@ -212,3 +212,72 @@ CTEST(INPUT_CHECK, UNEXPECTED_TOKENS_2)
 
     ASSERT_EQUAL(expec, real);
 }
+
+CTEST(INTERSECTION, CIRCLES_1)
+{
+    int figure_amount = 2;
+
+    float x_arr[figure_amount];
+    x_arr[0] = 4;
+    x_arr[1] = 2;
+
+    float y_arr[figure_amount];
+    y_arr[0] = 2;
+    y_arr[1] = 2;
+
+    float radius_arr[figure_amount];
+    radius_arr[0] = 8;
+    radius_arr[1] = 8;
+
+    int expec = 1;
+    int real = intersects(x_arr, y_arr, radius_arr, figure_amount);
+
+    ASSERT_EQUAL(expec, real);
+}
+
+CTEST(INTERSECTION, CIRCLES_2)
+{
+    int figure_amount = 3;
+
+    float x_arr[figure_amount];
+    x_arr[0] = 4;
+    x_arr[1] = 2;
+    x_arr[2] = 8;
+
+    float y_arr[figure_amount];
+    y_arr[0] = 2;
+    y_arr[1] = 2;
+    y_arr[2] = 2;
+
+    float radius_arr[figure_amount];
+    radius_arr[0] = 8;
+    radius_arr[1] = 8;
+    radius_arr[2] = 2;
+
+    int expec = 1;
+    int real = intersects(x_arr, y_arr, radius_arr, figure_amount);
+
+    ASSERT_EQUAL(expec, real);
+}
+
+CTEST(INTERSECTION, CIRCLES_3)
+{
+    int figure_amount = 2;
+
+    float x_arr[figure_amount];
+    x_arr[0] = 4;
+    x_arr[1] = 2;
+
+    float y_arr[figure_amount];
+    y_arr[0] = 2;
+    y_arr[1] = 2;
+
+    float radius_arr[figure_amount];
+    radius_arr[0] = 8;
+    radius_arr[1] = 21;
+
+    int expec = 0;
+    int real = intersects(x_arr, y_arr, radius_arr, figure_amount);
+
+    ASSERT_EQUAL(expec, real);
+}
