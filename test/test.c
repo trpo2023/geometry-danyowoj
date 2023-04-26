@@ -1,5 +1,5 @@
-#include "C:/Users/latsu/GitHub_projects/geometry/geometry-danyowoj/src/libgeometry/check.h"
-#include "C:/Users/latsu/GitHub_projects/geometry/geometry-danyowoj/thirdparty/ctest.h"
+#include "../thirdparty/ctest.h"
+#include "libgeometry/check.h"
 
 #include <stdio.h>
 
