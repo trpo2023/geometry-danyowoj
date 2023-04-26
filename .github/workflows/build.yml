@@ -20,6 +20,3 @@ jobs:
 
       - name: Start test
         run: make run_test
-
-      - name: Start programm
-        run: make run
