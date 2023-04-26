@@ -1,12 +1,13 @@
 #include "check.h"
 #include <ctype.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int check_word(char* a, char* b, int* error)
 {
-    int open_bracket_index;
+    int open_bracket_index = 0;
 
     for (int i = 0; i < 7; i++) {
         if (a[i] != b[i] && i < 6) {
@@ -14,20 +15,22 @@ int check_word(char* a, char* b, int* error)
             *error = 1;
             break;
         }
-        open_bracket_index = i;
+        if (a[6] == '(') {
+            open_bracket_index = i;
+        } else {
+            *error = 1;
+        }
     }
     return open_bracket_index;
 }
 
 int search_close_bracket_index(char* a, int* length)
 {
-    int close_bracket_index;
+    int close_bracket_index = 0;
 
     for (int i = 0; i < *length && a[i] != '\n'; i++) {
         if (a[i] == ')') {
             close_bracket_index = i;
-        } else {
-            close_bracket_index = *length - 1;
         }
     }
     return close_bracket_index;
@@ -147,4 +150,39 @@ int check_unexpected_tokens(
             break;
     }
     return *error;
+}
+
+int intersects(float* x_arr, float* y_arr, float* radius_arr, int figure_amount)
+{
+    int intersections_amount = 0;
+    printf("\nIntersections:\n");
+    for (int i = 0; i < figure_amount; i++) {
+        intersections_amount = 0;
+        printf("\ncircle %d. intersects ", i);
+        for (int j = 0; j < figure_amount; j++) {
+            // distance between centers
+            double r = sqrt(
+                    pow(x_arr[j] - x_arr[i], 2) + pow(y_arr[j] - y_arr[i], 2));
+            // checking for the coincidence of two circles
+            if (r == 0 && radius_arr[i] == radius_arr[j] && j != i) {
+                // intersects
+                intersections_amount++;
+                printf("circle %d.\t", j);
+            }
+            // checking for the intersection of circles according to the
+            // triangle rule
+            if (radius_arr[i] + radius_arr[j] >= r
+                && radius_arr[i] + r >= radius_arr[j]
+                && r + radius_arr[j] >= radius_arr[i] && j != i) {
+                // intersects
+                intersections_amount++;
+                printf("circle %d.\t", j);
+            }
+        }
+    }
+    if (intersections_amount == 0) {
+        printf("nothing");
+    }
+    puts("\n");
+    return intersections_amount;
 }

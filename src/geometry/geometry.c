@@ -5,18 +5,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libgeometry/check.h>
+#include "../libgeometry/check.h"
 
-void token(char* a)
+void token(char* a, float* x, float* y, float* radius)
 {
-    float x, y, radius, square, perimeter;
+    float square, perimeter;
     char del[] = "circle( ,)";
-    x = atof(strtok(a, del));
-    y = atof(strtok(NULL, del));
-    radius = atof(strtok(NULL, del));
-    square = M_PI * radius * radius;
-    perimeter = 2 * M_PI * radius;
-    printf("x = %.3f\ty = %.3f\tradius = %.3f\n", x, y, radius);
+    *x = atof(strtok(a, del));
+    *y = atof(strtok(NULL, del));
+    *radius = atof(strtok(NULL, del));
+    square = M_PI * *radius * *radius;
+    perimeter = 2 * M_PI * *radius;
+    printf("x = %.3f\ty = %.3f\tradius = %.3f\n", *x, *y, *radius);
     printf("square = %.3f\tperimeter = %.3f\n", square, perimeter);
 }
 
@@ -46,6 +46,11 @@ int main()
 
     length = count;
     fclose(file1);
+
+    int figure_amount = 0;
+    float* x_arr = (float*)malloc(figure_amount * sizeof(float));
+    float* y_arr = (float*)malloc(figure_amount * sizeof(float));
+    float* radius_arr = (float*)malloc(figure_amount * sizeof(float));
 
     char a[length], b[6] = "circle";
     file = fopen("geometry.txt", "r");
@@ -80,11 +85,19 @@ int main()
 
         if (error == 0) {
             printf("No Errors!\n");
-            token(a);
+            float x = 0, y = 0, radius = 0;
+            token(a, &x, &y, &radius);
+            x_arr[figure_amount] = x;
+            y_arr[figure_amount] = y;
+            radius_arr[figure_amount] = radius;
+            figure_amount += 1;
         }
 
         error = 0;
         printf("\n");
     }
+
+    intersects(x_arr, y_arr, radius_arr, figure_amount);
+
     return 0;
 }

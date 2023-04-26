@@ -11,3 +11,5 @@ int check_close_bracket_index(
         char* a, int* third_num_elem_index, int* length, int* error);
 int check_unexpected_tokens(
         char* a, int* close_bracket_index, int* length, int* error);
+int intersects(
+        float* x_arr, float* y_arr, float* radius_arr, int figure_amount);
