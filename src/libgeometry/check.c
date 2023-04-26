@@ -152,8 +152,7 @@ int check_unexpected_tokens(
     return *error;
 }
 
-void intersects(
-        float* x_arr, float* y_arr, float* radius_arr, int figure_amount)
+int intersects(float* x_arr, float* y_arr, float* radius_arr, int figure_amount)
 {
     int intersections_amount = 0;
     printf("\nIntersections:\n");
@@ -185,4 +184,5 @@ void intersects(
         printf("nothing");
     }
     puts("\n");
+    return intersections_amount;
 }
